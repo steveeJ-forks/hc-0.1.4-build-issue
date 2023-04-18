@@ -6,3 +6,16 @@ To see the issue, do
 nix develop
 cargo build
 ```
+
+both of these worked for me (stefan) as of
+
+```
+(
+    set -xe
+    for i in 2 1; do
+        sed -i -E "s/resolver = \".+\"/resolver = \"${i:?}\"/" Cargo.toml
+        CARGO_TARGET_DIR=wasm cargo build --target=wasm32-unknown-unknown 
+        cargo test
+    done
+)
+```
