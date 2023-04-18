@@ -11,11 +11,14 @@ both of these worked for me (stefan) as of
 
 ```
 (
-    set -xe
-    for i in 2 1; do
+    set -x
+    for i in 1 2; do
         sed -i -E "s/resolver = \".+\"/resolver = \"${i:?}\"/" Cargo.toml
-        CARGO_TARGET_DIR=wasm cargo build --target=wasm32-unknown-unknown 
-        cargo test
+        grep resolver Cargo.toml
+        CARGO_TARGET_DIR=wasm cargo build --target=wasm32-unknown-unknown 2>1 > /dev/null
+        echo $?
+        cargo test  2>1 > /dev/null
+        echo $?
     done
 )
 ```
